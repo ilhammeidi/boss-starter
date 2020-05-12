@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   sidebarOpen: true,
-  theme: 'skyBlueTheme',
+  theme: 'purpleRedTheme',
   pageLoaded: false,
   palette: List([
     { name: 'Purple Red', value: 'purpleRedTheme' },
