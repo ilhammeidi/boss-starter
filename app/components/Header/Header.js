@@ -4,63 +4,53 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
-import {
-  AppBar, Toolbar,
-  IconButton, Hidden
-} from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Hidden } from '@material-ui/core';
 import UserMenu from './UserMenu';
 import styles from './header-jss';
 
+function Header(props) {
+  const {
+    classes,
+    toggleDrawerOpen,
+    margin,
+    turnDarker,
+  } = props;
 
-class Header extends React.Component {
-  state = {
-    open: false,
-  };
-
-  render() {
-    const {
-      classes,
-      toggleDrawerOpen,
-      margin,
-      turnDarker,
-    } = this.props;
-
-    return (
-      <AppBar
-        className={
-          classNames(
-            classes.appBar,
-            margin && classes.appBarShift,
-            classes.appbar,
-            turnDarker && classes.darker
-          )
-        }
-      >
-        <Toolbar disableGutters={!this.state.open}>
-          <IconButton
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Menu"
-            onClick={toggleDrawerOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className={classes.flex}>
-            <div className={classes.wrapper}>
-              <div className={classes.search}>
-                <SearchIcon />
-              </div>
-              <input className={classes.input} placeholder="Search" />
+  return (
+    <AppBar
+      className={
+        classNames(
+          classes.appBar,
+          margin && classes.appBarShift,
+          classes.appbar,
+          turnDarker && classes.darker
+        )
+      }
+    >
+      <Toolbar disableGutters>
+        <IconButton
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="Menu"
+          onClick={toggleDrawerOpen}
+        >
+          <MenuIcon />
+        </IconButton>
+        <div className={classes.flex}>
+          <div className={classes.wrapper}>
+            <div className={classes.search}>
+              <SearchIcon />
             </div>
+            <input className={classes.input} placeholder="Search" />
           </div>
-          <Hidden xsDown>
-            <span className={classes.separatorV} />
-          </Hidden>
-          <UserMenu />
-        </Toolbar>
-      </AppBar>
-    );
-  }
+        </div>
+        <Hidden xsDown>
+          <span className={classes.separatorV} />
+        </Hidden>
+        <UserMenu />
+      </Toolbar>
+    </AppBar>
+  );
 }
 
 Header.propTypes = {

@@ -6,26 +6,24 @@ import logo from 'ba-images/logo.svg';
 import { Hidden } from '@material-ui/core';
 import styles from './appStyles-jss';
 
-class Outer extends React.Component {
-  render() {
-    const {
-      classes,
-      children,
-    } = this.props;
-    return (
-      <div className={classes.appFrameOuter}>
-        <main className={classes.outerContent} id="mainContent">
-          <Hidden mdUp>
-            <div className={classes.brand}>
-              <img src={logo} alt={brand.name} />
-              <h3>{brand.name}</h3>
-            </div>
-          </Hidden>
-          {children}
-        </main>
-      </div>
-    );
-  }
+function Outer(props) {
+  const {
+    classes,
+    children,
+  } = props;
+  return (
+    <div className={classes.appFrameOuter}>
+      <main className={classes.outerContent} id="mainContent">
+        <Hidden mdUp>
+          <div className={classes.brand}>
+            <img src={logo} alt={brand.name} />
+            <h3>{brand.name}</h3>
+          </div>
+        </Hidden>
+        {children}
+      </main>
+    </div>
+  );
 }
 
 Outer.propTypes = {

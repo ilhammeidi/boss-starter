@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import Loading from 'react-loading-bar';
@@ -13,61 +13,40 @@ import { changeThemeAction } from 'ba-actions/UiActions';
 import themePallete from 'ba-api/themePalette';
 import styles from '../Templates/appStyles-jss';
 
-class ThemeWrapper extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pageLoaded: true,
-      theme: createMuiTheme(themePallete(props.color)),
-    };
-  }
+function ThemeWrapper(props) {
+  const {
+    classes,
+    children,
+    color,
+  } = props;
 
-  componentWillMount = () => {
-    this.onProgressShow();
-  }
+  const [pageLoaded, setPageLoaded] = useState(true);
+  const [theme] = useState(
+    createMuiTheme(themePallete(color))
+  );
 
-  componentDidMount = () => {
-    this.playProgress();
-  }
-
-  componentWillUnmount() {
-    this.onProgressShow();
-  }
-
-  onProgressShow = () => {
-    this.setState({ pageLoaded: true });
-  }
-
-  onProgressHide = () => {
-    this.setState({ pageLoaded: false });
-  }
-
-  playProgress = () => {
-    this.onProgressShow();
+  useEffect(() => {
+    setPageLoaded(true);
     setTimeout(() => {
-      this.onProgressHide();
+      setPageLoaded(false);
     }, 500);
-  }
+    return () => {
+      setPageLoaded(true);
+    };
+  }, []);
 
-  render() {
-    const { classes, children } = this.props;
-    const {
-      pageLoaded,
-      theme,
-    } = this.state;
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <Loading
-            show={pageLoaded}
-            color="rgba(255,255,255,.9)"
-            showSpinner={false}
-          />
-          {children}
-        </div>
-      </MuiThemeProvider>
-    );
-  }
+  return (
+    <MuiThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <Loading
+          show={pageLoaded}
+          color="rgba(255,255,255,.9)"
+          showSpinner={false}
+        />
+        {children}
+      </div>
+    </MuiThemeProvider>
+  );
 }
 
 ThemeWrapper.propTypes = {
@@ -78,7 +57,7 @@ ThemeWrapper.propTypes = {
 
 const reducer = 'ui';
 const mapStateToProps = state => ({
-  force: state, // force state from reducer
+  ...state,
   color: state.getIn([reducer, 'theme']),
   palette: state.getIn([reducer, 'palette']),
 });

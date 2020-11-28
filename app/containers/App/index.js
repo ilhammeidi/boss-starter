@@ -7,20 +7,17 @@ import LoginDedicated from '../Pages/Standalone/LoginDedicated';
 import ThemeWrapper from './ThemeWrapper';
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
-
-class App extends React.Component {
-  render() {
-    return (
-      <ThemeWrapper>
-        <Switch>
-          <Route path="/" exact component={LoginDedicated} />
-          <Route path="/app" component={Application} />
-          <Route component={Auth} />
-          <Route component={NotFound} />
-        </Switch>
-      </ThemeWrapper>
-    );
-  }
+function App() {
+  return (
+    <ThemeWrapper>
+      <Switch>
+        <Route path="/" exact component={LoginDedicated} />
+        <Route path="/app" component={Application} />
+        <Route component={Auth} />
+        <Route component={NotFound} />
+      </Switch>
+    </ThemeWrapper>
+  );
 }
 
 export default App;

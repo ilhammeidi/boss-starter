@@ -8,26 +8,25 @@ import {
   NotFound, BlankPage, Error,
 } from '../pageListAsync';
 
-class Application extends React.Component {
-  render() {
-    return (
-      <Dashboard history={this.props.history}>
-        <Switch>
-          <Route exact path="/app" component={DashboardV1} />
-          <Route exact path="/app/pages/blank-page" component={BlankPage} />
-          <Route exact path="/app/pages/error" component={Error} />
-          { /* Table */ }
-          <Route exact path="/app/tables" component={Parent} />
-          <Route path="/app/tables/basic-table" component={SimpleTable} />
-          { /* Form & Button */ }
-          <Route exact path="/app/forms" component={Parent} />
-          <Route path="/app/forms/reduxform" component={ReduxForm} />
-          { /* Default */ }
-          <Route component={NotFound} />
-        </Switch>
-      </Dashboard>
-    );
-  }
+function Application(props) {
+  const { history } = props;
+  return (
+    <Dashboard history={history}>
+      <Switch>
+        <Route exact path="/app" component={DashboardV1} />
+        <Route exact path="/app/pages/blank-page" component={BlankPage} />
+        <Route exact path="/app/pages/error" component={Error} />
+        { /* Table */ }
+        <Route exact path="/app/tables" component={Parent} />
+        <Route path="/app/tables/basic-table" component={SimpleTable} />
+        { /* Form & Button */ }
+        <Route exact path="/app/forms" component={Parent} />
+        <Route path="/app/forms/reduxform" component={ReduxForm} />
+        { /* Default */ }
+        <Route component={NotFound} />
+      </Switch>
+    </Dashboard>
+  );
 }
 
 Application.propTypes = {

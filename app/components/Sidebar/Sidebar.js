@@ -14,7 +14,6 @@ import {
 import MainMenu from './MainMenu';
 import styles from './sidebar-jss';
 
-
 const MenuContent = props => {
   const {
     classes,
@@ -68,50 +67,48 @@ MenuContent.defaultProps = {
 
 const MenuContentStyle = withStyles(styles)(MenuContent);
 
-class Sidebar extends React.Component {
-  state = {
-    anchor: 'left'
-  };
+function Sidebar(props) {
+  const {
+    classes,
+    open,
+    toggleDrawerOpen,
+    loadTransition,
+    turnDarker
+  } = props;
 
-  render() {
-    const { anchor } = this.state;
-    const {
-      classes,
-      open,
-      toggleDrawerOpen,
-      loadTransition,
-      turnDarker
-    } = this.props;
-    return (
-      <Fragment>
-        <Hidden lgUp>
-          <SwipeableDrawer
-            onClose={toggleDrawerOpen}
-            onOpen={toggleDrawerOpen}
-            open={!open}
-            anchor={anchor}
-          >
-            <div className={classes.swipeDrawerPaper}>
-              <MenuContentStyle drawerPaper toggleDrawerOpen={toggleDrawerOpen} loadTransition={loadTransition} />
-            </div>
-          </SwipeableDrawer>
-        </Hidden>
-        <Hidden mdDown>
-          <Drawer
-            variant="permanent"
-            onClose={toggleDrawerOpen}
-            classes={{
-              paper: classNames(classes.drawer, classes.drawerPaper, !open ? classes.drawerPaperClose : ''),
-            }}
-            open={open}
-            anchor={anchor}
-          >
-            <MenuContentStyle drawerPaper={open} turnDarker={turnDarker} loadTransition={loadTransition} />
-          </Drawer>
-        </Hidden>
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <Hidden lgUp>
+        <SwipeableDrawer
+          onClose={toggleDrawerOpen}
+          onOpen={toggleDrawerOpen}
+          open={!open}
+          anchor="left"
+        >
+          <div className={classes.swipeDrawerPaper}>
+            <MenuContentStyle drawerPaper toggleDrawerOpen={toggleDrawerOpen} loadTransition={loadTransition} />
+          </div>
+        </SwipeableDrawer>
+      </Hidden>
+      <Hidden mdDown>
+        <Drawer
+          variant="permanent"
+          onClose={toggleDrawerOpen}
+          classes={{
+            paper: classNames(classes.drawer, classes.drawerPaper, !open ? classes.drawerPaperClose : ''),
+          }}
+          open={open}
+          anchor="left"
+        >
+          <MenuContentStyle
+            drawerPaper={open}
+            turnDarker={turnDarker}
+            loadTransition={loadTransition}
+          />
+        </Drawer>
+      </Hidden>
+    </Fragment>
+  );
 }
 
 Sidebar.propTypes = {
