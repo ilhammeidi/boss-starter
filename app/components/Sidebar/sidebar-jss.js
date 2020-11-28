@@ -110,6 +110,7 @@ const styles = theme => ({
       paddingLeft: theme.spacing(3),
     }
   },
+  title: {},
   dense: {
     '& > $title:first-child': {
       margin: '0'

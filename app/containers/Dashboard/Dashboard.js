@@ -151,7 +151,7 @@ function StrippedTable(props) {
         <Table className={classNames(classes.table, tableStyles.stripped)}>
           <TableHead>
             <TableRow>
-              <TableCell padding="dense">Dessert (100g serving)</TableCell>
+              <TableCell>Dessert (100g serving)</TableCell>
               <TableCell align="right">Calories</TableCell>
               <TableCell align="right">Fat (g)</TableCell>
               <TableCell align="right">Carbs (g)</TableCell>
@@ -162,7 +162,7 @@ function StrippedTable(props) {
             {data.map(n =>
               ([
                 <TableRow key={n.id}>
-                  <TableCell padding="dense">{n.name}</TableCell>
+                  <TableCell>{n.name}</TableCell>
                   <TableCell align="right">{n.calories}</TableCell>
                   <TableCell align="right">{n.fat}</TableCell>
                   <TableCell align="right">{n.carbs}</TableCell>
