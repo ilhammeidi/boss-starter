@@ -132,7 +132,7 @@
     "keycode": "^2.2.0",
     "lodash": "^4.17.15",
     "lru-memoize": "^1.0.2",
-    "minimist": "1.2.0",
+    "minimist": "1.2.6",
     "mui-datatables": "^2.13.1",
     "prop-types": "15.7.2",
     "rcolor": "^1.0.1",
