@@ -9,6 +9,10 @@ html {
   box-sizing: inherit;
 }
 
+*:focus {
+  outline: none
+}
+
 html,
 body {
   height: 100%;

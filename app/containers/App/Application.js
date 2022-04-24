@@ -1,28 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import Dashboard from '../Templates/Dashboard';
+import { ThemeContext } from './ThemeWrapper';
 import {
-  DashboardV1, Parent,
-  SimpleTable, ReduxForm,
-  NotFound, BlankPage, Error,
+  Parent,
+  DashboardPage,
+  BlankPage,
+  Form,
+  Table,
+  Error,
+  NotFound
 } from '../pageListAsync';
 
 function Application(props) {
   const { history } = props;
+  const changeMode = useContext(ThemeContext);
   return (
-    <Dashboard history={history}>
+    <Dashboard history={history} changeMode={changeMode}>
       <Switch>
-        <Route exact path="/app" component={DashboardV1} />
-        <Route exact path="/app/pages/blank-page" component={BlankPage} />
-        <Route exact path="/app/pages/error" component={Error} />
-        { /* Table */ }
-        <Route exact path="/app/tables" component={Parent} />
-        <Route path="/app/tables/basic-table" component={SimpleTable} />
-        { /* Form & Button */ }
-        <Route exact path="/app/forms" component={Parent} />
-        <Route path="/app/forms/reduxform" component={ReduxForm} />
-        { /* Default */ }
+        <Route exact path="/app" component={BlankPage} />
+        <Route exact path="/app/blank-page" component={BlankPage} />
+        <Route path="/app/pages/dashboard" component={DashboardPage} />
+        <Route path="/app/pages/form" component={Form} />
+        <Route path="/app/pages/table" component={Table} />
+        <Route path="/app/pages/not-found" component={NotFound} />
+        <Route path="/app/pages/error" component={Error} />
+        <Route exact path="/app/pages" component={Parent} />
         <Route component={NotFound} />
       </Switch>
     </Dashboard>

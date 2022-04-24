@@ -4,6 +4,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+// const ESLintPlugin = require('eslint-webpack-plugin');
 
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
@@ -11,36 +12,17 @@ const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 module.exports = options => ({
   mode: options.mode,
   entry: options.entry,
-  output: Object.assign(
-    {
-      // Compile into js/build.js
-      path: path.resolve(process.cwd(), 'build'),
-      publicPath: '/',
-    },
-    options.output,
-  ), // Merge with env dependent settings
-  devServer: {
-    inline: false,
-  },
+  output: {
+    // Compile into js/build.js
+    path: path.resolve(process.cwd(), 'build'),
+    publicPath: '/',
+    ...options.output,
+  }, // Merge with env dependent settings
   optimization: options.optimization,
   module: {
     rules: [
-      /*
-        Disabled eslint by default.
-        You can enable it to maintain and keep clean your code.
-        NOTE: By enable eslint running app process at beginning will slower
-      */
       {
-        enforce: 'pre',
-        test: /\.js?$/,
-        exclude: [/node_modules/],
-        loader: 'eslint-loader',
-        options: {
-          quiet: true,
-        }
-      },
-      {
-        test: /\.jsx?$/, // Transform all .js files required somewhere with Babel
+        test: /\.jsx?$/, // Transform all .js and .jsx files required somewhere with Babel
         exclude: /node_modules/,
         use: {
           loader: 'happypack/loader?id=js',
@@ -48,18 +30,44 @@ module.exports = options => ({
         },
       },
       {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
+      {
         // Preprocess our own .css files
         // This is the place to add your own loaders (e.g. sass/less etc.)
         // for a list of loaders, see https://webpack.js.org/loaders/#styling
         test: /\.css$/,
         exclude: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options:
+          {
+            esModule: false,
+            sourceMap: false,
+            importLoaders: 10,
+            modules: false
+          }
+        }]
       },
       {
         // Preprocess 3rd party .css files located in node_modules
         test: /\.css$/,
         include: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader',
+          options:
+          {
+            esModule: false,
+            importLoaders: 10,
+            modules: false
+          }
+        }]
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
@@ -74,10 +82,10 @@ module.exports = options => ({
           loader: 'css-loader',
           options:
           {
+            esModule: false,
             sourceMap: false,
-            importLoaders: 2,
-            modules: true,
-            localIdentName: '[local]__[hash:base64:5]'
+            importLoaders: 10,
+            modules: true
           }
         },
         {
@@ -89,8 +97,10 @@ module.exports = options => ({
         {
           loader: 'sass-loader',
           options: {
-            outputStyle: 'expanded',
-            sourceMap: false
+            sassOptions: {
+              outputStyle: 'expanded',
+              sourceMap: false
+            }
           }
         }],
       },
@@ -154,10 +164,20 @@ module.exports = options => ({
       },
     ],
   },
-  node: {
-    fs: 'empty'
-  },
   plugins: options.plugins.concat([
+    /*
+      Disabled eslint by default.
+      You can enable it to maintain and keep clean your code.
+      NOTE: By enable eslint running app process at beginning will slower
+    */
+    //    new ESLintPlugin({
+    //      extensions: 'js',
+    //      exclude: 'node_modules',
+    //      failOnWarning: true,
+    //      failOnError: true,
+    //      emitError: true,
+    //      emitWarning: true,
+    //    }),
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
     // inside your code for any environment checks; Terser will automatically
     // drop any unreachable code.
@@ -166,37 +186,52 @@ module.exports = options => ({
       threadPool: happyThreadPool,
       loaders: ['babel-loader?cacheDirectory=true']
     }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
     }),
     new webpack.ContextReplacementPlugin(/^\.\/locale$/, context => {
-      if (!/\/moment\//.test(context.context)) {
-        return;
-      }
+      if (!/\/moment\//.test(context.context)) { return; }
       // context needs to be modified in place
       Object.assign(context, {
-      // include only CJK
+        // include only CJK
         regExp: /^\.\/(ja|ko|zh)/,
         // point to the locale data folder relative to moment's src/lib/locale
-        request: './locale'
+        request: '../../locale'
       });
     })
   ]),
   resolve: {
-    modules: ['node_modules', 'app'],
+    modules: ['browser', 'domain', 'node_modules', 'app'],
     extensions: ['.js', '.jsx', '.react.js'],
     mainFields: ['browser', 'jsnext:main', 'main'],
+    fallback: {
+      fs: false,
+      domain: false,
+      path: false,
+      os: false,
+      assert: false,
+      crypto: false,
+      util: false,
+      stream: false,
+      url: false,
+      http: false,
+      https: false,
+      zlib: false,
+      vm: false,
+      console: false,
+      tty: false,
+    },
     alias: {
-      'ba-components': path.resolve(__dirname, '../../app/components/'),
-      'ba-containers': path.resolve(__dirname, '../../app/containers/'),
-      'ba-actions': path.resolve(__dirname, '../../app/actions/'),
-      'ba-styles': path.resolve(__dirname, '../../app/styles/components/'),
-      'ba-helpers': path.resolve(__dirname, '../../app/styles/helpers/'),
-      'ba-api': path.resolve(__dirname, '../../app/api/'),
-      'ba-images': path.resolve(__dirname, '../../public/images/'),
-      'ba-vendor': path.resolve(__dirname, '../../node_modules/'),
+      'boss-components': path.resolve(__dirname, '../../app/components/'),
+      'boss-actions': path.resolve(__dirname, '../../app/actions/'),
+      'boss-redux': path.resolve(__dirname, '../../app/redux/'),
+      'boss-styles': path.resolve(__dirname, '../../app/styles/components/'),
+      'boss-api': path.resolve(__dirname, '../../app/api/'),
+      'boss-images': path.resolve(__dirname, '../../public/images/'),
+      'boss-vendor': path.resolve(__dirname, '../../node_modules/'),
     }
   },
   devtool: options.devtool,

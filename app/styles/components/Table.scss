@@ -1,83 +1,8 @@
 @import "../../styles/mixins";
 
-.stripped{
-  tbody tr:nth-child(even){
-    background: material-color('grey', '100');
-  }
-}
-
-.hover{
-  tbody tr:hover{
-    background: material-color('grey', '200');
-  }
-}
-
-.bordered{
-  thead tr{
-    background: material-color('grey', '200');
-  }
-  td, th{
-    border: 1px solid material-color('grey', '300');
-  }
-  tr td, tr th{
-    &:first-child{
-      border-left: none
-    }
-    &:last-child{
-      border-right: none
-    }
-  }
-}
-
-table.small{
-  tr{
-    height: 24px;
-    td, th{
-      padding: 4px 10px;
-      font-size: 12px;
-    }
-  }
-}
-
-table.medium{
-  tr{
-    height: 48px;
-    td, th{
-      padding: 4px 56px 4px 24px;
-      font-size: 14px;
-    }
-  }
-}
-
-table.big{
-  tr{
-    height: 64px;
-    td, th{
-      padding: 8px 56px 8px 24px;
-      font-size: 18px;
-    }
-  }
-}
-
-.nodata{
-  text-align: center;
-  padding: 10px 10px 40px;
-  font-size: 14px;
-  line-height: 16px;
-  color: material-color('grey', '500');
-  svg{
-    position: relative;
-    top: 5px;
-    width: 22px;
-    margin: 0 6px;
-    fill: material-color('grey', '500');
-  }
-}
-
-.hideAction{
+.hideAction {
   display: none !important;
 }
-
 .tableCrud{
   table-layout: fixed;
   .hiddenField{
@@ -85,18 +10,20 @@ table.big{
     position: absolute;
   }
   .editing{
-    background: material-color('lime', '50');
+    background: rgba(249, 251, 231, 0.4) !important;
     td .crudInput{
       &:before{
         opacity: 1;
       }
-      > * {
+      > div {
+        border: 1px solid rgba(0,0,0,0.16);
         &:before, &:after{
           opacity: 1;
         } 
       }
       svg, button {
         visibility: visible;
+        padding: 0
       }
       input[type="text"],
       input[type="number"],
@@ -105,11 +32,7 @@ table.big{
       }
     }
   }
-  th{
-    padding: 0 15px;
-  }
   td{
-    padding: 0 15px;
     &.toggleCell{
       position: relative;
     }
@@ -125,20 +48,38 @@ table.big{
       }
     }
     .crudInput{
+      border: none;
+      border-radius: 6px;
       &:before{
         opacity: 0;
       }
-      color: material-color('grey', '900');
-      > * > input {
-        color: material-color('grey', '900');
+      > div {
+        border: none;
         &:before, &:after{
           opacity: 0;
-        } 
+        }
+      }
+      &.lightTxt {
+        color: material-color('grey', '200');
+        div {
+          color: material-color('grey', '200');
+        }
+      }
+      &.darkTxt {
+        color: material-color('grey', '900');
+        div {
+          color: material-color('grey', '900');
+        }
       }
       svg, button {
         visibility: hidden;
       }
     }
+  }
+  th {
+    padding: 0 8px;
+    word-break: keep-all;
+    white-space: nowrap;
   }
   td [disabled], td[disabled]:hover{
     border: none !important;

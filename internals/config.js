@@ -21,21 +21,41 @@ const ReactBoilerplate = {
        * by listing them here.
        */
       exclude: [
-        '@date-io/date-fns',
+        '@date-io/moment',
+        '@material-ui/pickers',
+        '@react-dnd',
+        'autosuggest-highlight',
         'chalk',
         'compression',
+        'convert-source-map',
         'cross-env',
+        'dotenv',
+        'dnd-core',
+        'eslint-webpack-plugin',
+        'etag',
         'express',
+        'fs',
+        'html-webpack-plugin',
         'ip',
+        'lint-staged',
         'minimist',
+        'moment',
+        'mui-datatables',
+        'optimize-css-assets-webpack-plugin',
+        'react-trello',
         'sanitize.css',
+        'serve-favicon',
+        'slick-carousel',
+        'tunnel-agent',
+        'terser-webpack-plugin',
+        'url-loader'
       ],
 
       /**
        * Specify any additional dependencies here. We include core-js and lodash
        * since a lot of our dependencies depend on them and they get picked up by webpack.
        */
-      include: ['core-js', 'eventsource-polyfill', 'babel-polyfill', 'lodash'],
+      include: ['core-js', 'eventsource-polyfill', 'lodash'],
 
       // The path where the DLL manifest and bundle will get built
       path: resolve('../node_modules/react-boilerplate-dlls'),

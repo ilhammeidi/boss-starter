@@ -35,7 +35,8 @@ const Breadcrumbs = (props) => {
                     );
                   })
                 }
-                &nbsp;{place}
+                &nbsp;
+                {place}
               </span>
             </p>
           );

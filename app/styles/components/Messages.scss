@@ -40,19 +40,34 @@
 // Fill Background Table Row
 table tr{
   &.bgInfo{
-    background: material-color('blue', '50')
+    background: material-color('blue', '50');
+    td{
+      color: material-color('blue', '500');
+    }
   }
   &.bgSuccess{
-    background: material-color('green', '50')
+    background: material-color('green', '50');
+    td{
+      color: material-color('green', '500');
+    }
   }
   &.bgWarning{
-    background: material-color('orange', '50')
+    background: material-color('orange', '50');
+    td{
+      color: material-color('orange', '500');
+    }
   }
   &.bgError{
-    background: material-color('red', '50')
+    background: material-color('red', '50');
+    td{
+      color: material-color('red', '500');
+    }
   }
   &.bgDefault{
-    background: #FFF
+    background: #FFF;
+    td{
+      color: #212121
+    }
   }
 }
 

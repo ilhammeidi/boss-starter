@@ -4,5 +4,4 @@
  *
  */
 
-const CHANGE_LOCALE = 'CHANGE_LOCALE';
-export default CHANGE_LOCALE;
+export const CHANGE_LOCALE = 'app/LanguageToggle/CHANGE_LOCALE'; // eslint-disable-line

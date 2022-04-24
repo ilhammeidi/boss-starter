@@ -1,9 +1,9 @@
-/* eslint consistent-return:0 */
+/* eslint consistent-return:0 import/order:0 */
 
 const express = require('express');
+const logger = require('./logger');
 const favicon = require('serve-favicon');
 const path = require('path');
-const logger = require('./logger');
 const rawicons = require('./rawicons');
 const rawdocs = require('./rawdocs');
 const argv = require('./argv');

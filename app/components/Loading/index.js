@@ -1,17 +1,18 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
-import { CircularProgress } from '@material-ui/core';
 const styles = {
   circularProgress: {
     position: 'fixed',
-    top: 'calc(50% - 30px)',
-    left: 'calc(50% - 30px)',
+    top: 'calc(50% - 45px)',
+    left: 'calc(50% - 45px)',
   }
 };
 
 function Loading(props) {
-  return (<CircularProgress className={props.classes.circularProgress} size={60} color="secondary" />);
+  const { classes } = props;
+  return (<CircularProgress className={classes.circularProgress} size={90} thickness={1} color="secondary" />);
 }
 
 Loading.propTypes = {

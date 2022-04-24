@@ -4,40 +4,25 @@ import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Header, Sidebar, BreadCrumb } from 'ba-components';
-import { toggleAction, openAction, playTransitionAction } from 'ba-actions/UiActions';
-import { Fade } from '@material-ui/core';
+import { toggleAction, openAction, playTransitionAction } from 'boss-redux/actions/uiActions';
+import LeftSidebarLayout from './layouts/LeftSidebarLayout';
+import DropMenuLayout from './layouts/DropMenuLayout';
+import MegaMenuLayout from './layouts/MegaMenuLayout';
 import styles from './appStyles-jss';
 
 function Dashboard(props) {
-  const {
-    classes,
-    children,
-    history,
-    toggleDrawer,
-    sidebarOpen,
-    initialOpen,
-    loadTransition,
-    pageLoaded
-  } = props;
-  const [transform, setTransform] = useState(0);
-
-  const darker = true;
-
-  const handleScroll = () => {
-    const doc = document.documentElement;
-    const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    setTransform(scroll);
-  };
+  // Initial header style
+  const [appHeight, setAppHeight] = useState(0);
 
   useEffect(() => {
-    // Scroll content to top
-    window.addEventListener('scroll', handleScroll);
+    const { history, loadTransition } = props;
+
+    // Adjust min height
+    setAppHeight(window.innerHeight + 112);
 
     // Set expanded sidebar menu
     const currentPath = history.location.pathname;
-    initialOpen(currentPath);
-
+    props.initialOpen(currentPath);
     // Play page transition
     loadTransition(true);
 
@@ -50,54 +35,112 @@ function Dashboard(props) {
     });
 
     return () => {
-      unlisten();
+      if (unlisten != null) {
+        unlisten();
+      }
     };
   }, []);
 
+  const {
+    classes,
+    children,
+    toggleDrawer,
+    sidebarOpen,
+    loadTransition,
+    pageLoaded,
+    mode,
+    history,
+    layout,
+    changeMode
+  } = props;
+  const titleException = [];
+  const parts = history.location.pathname.split('/');
+  const place = parts[parts.length - 1].replace('-', ' ');
   return (
-    <div className={classes.appFrameInner}>
-      <Header toggleDrawerOpen={toggleDrawer} turnDarker={transform > 30 && darker} margin={sidebarOpen} />
-      <Sidebar
-        open={sidebarOpen}
-        toggleDrawerOpen={toggleDrawer}
-        loadTransition={loadTransition}
-        turnDarker={transform > 30 && darker}
-      />
-      <main className={classNames(classes.content, !sidebarOpen && classes.contentPadding)} id="mainContent">
-        <div className={classes.bgbar} />
-        <section className={classes.mainWrap}>
-          <BreadCrumb separator=" › " theme="light" location={history.location} />
-          <Fade
-            in={pageLoaded}
-            mountOnEnter
-            unmountOnExit
-            {...(pageLoaded ? { timeout: 700 } : {})}
+    <div
+      style={{ minHeight: appHeight }}
+      className={
+        classNames(
+          classes.appFrameInner,
+          layout === 'top-navigation' || layout === 'mega-menu' ? classes.topNav : classes.sideNav,
+          mode === 'dark' ? 'dark-mode' : 'light-mode'
+        )
+      }
+    >
+      { /* Left Sidebar Layout */
+        layout === 'left-sidebar' && (
+          <LeftSidebarLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            place={place}
+            titleException={titleException}
           >
-            <div className={!pageLoaded ? classes.hideApp : ''}>
-              {children}
-            </div>
-          </Fade>
-        </section>
-      </main>
+            { children }
+          </LeftSidebarLayout>
+        )
+      }
+      { /* Top Bar with Dropdown Menu */
+        layout === 'top-navigation' && (
+          <DropMenuLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            place={place}
+            titleException={titleException}
+          >
+            { children }
+          </DropMenuLayout>
+        )
+      }
+      { /* Top Bar with Mega Menu */
+        layout === 'mega-menu' && (
+          <MegaMenuLayout
+            history={history}
+            toggleDrawer={toggleDrawer}
+            loadTransition={loadTransition}
+            changeMode={changeMode}
+            sidebarOpen={sidebarOpen}
+            pageLoaded={pageLoaded}
+            mode={mode}
+            place={place}
+            titleException={titleException}
+          >
+            { children }
+          </MegaMenuLayout>
+        )
+      }
     </div>
   );
 }
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
+  history: PropTypes.object.isRequired,
   initialOpen: PropTypes.func.isRequired,
   toggleDrawer: PropTypes.func.isRequired,
   loadTransition: PropTypes.func.isRequired,
+  changeMode: PropTypes.func.isRequired,
   sidebarOpen: PropTypes.bool.isRequired,
-  pageLoaded: PropTypes.bool.isRequired
+  pageLoaded: PropTypes.bool.isRequired,
+  mode: PropTypes.string.isRequired,
+  layout: PropTypes.string.isRequired
 };
 
-const reducer = 'ui';
 const mapStateToProps = state => ({
-  sidebarOpen: state.getIn([reducer, 'sidebarOpen']),
-  pageLoaded: state.getIn([reducer, 'pageLoaded'])
+  sidebarOpen: state.ui.sidebarOpen,
+  pageLoaded: state.ui.pageLoaded,
+  mode: state.ui.type,
+  layout: state.ui.layout,
 });
 
 const mapDispatchToProps = dispatch => ({

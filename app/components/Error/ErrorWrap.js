@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import { Route, Link } from 'react-router-dom';
-
-import { Typography, Button } from '@material-ui/core';
 
 const styles = theme => ({
   errorWrap: {
-    background: theme.palette.common.white,
+    background: theme.palette.background.paper,
     boxShadow: theme.shadows[2],
     borderRadius: '50%',
     width: 500,
@@ -22,12 +22,17 @@ const styles = theme => ({
     flexDirection: 'column',
     position: 'relative',
     margin: `${theme.spacing(3)}px auto`,
+    '& h5': {
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+      },
+    },
   },
   title: {
     color: theme.palette.primary.main,
-    textShadow: `10px 6px 50px ${theme.palette.primary.main}`,
     [theme.breakpoints.down('sm')]: {
-      fontSize: '4rem'
+      fontSize: '4rem',
+      marginBottom: theme.spacing(2)
     },
   },
   deco: {
@@ -36,7 +41,7 @@ const styles = theme => ({
     borderRadius: 2,
   },
   button: {
-    marginTop: 50
+    marginTop: 24
   }
 });
 

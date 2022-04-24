@@ -1,30 +1,30 @@
-import { fromJS, List } from 'immutable';
-import MenuContent from 'ba-api/menu';
+import produce from 'immer';
+import MenuContent from 'boss-api/ui/menu';
 import {
   TOGGLE_SIDEBAR,
+  OPEN_MENU,
+  CLOSE_MENU,
   OPEN_SUBMENU,
   CHANGE_THEME,
+  CHANGE_MODE,
+  CHANGE_LAYOUT,
+  CHANGE_DIRECTION,
   LOAD_PAGE
-} from 'ba-actions/actionTypes';
+} from '../constants/uiConstants';
 
 const initialState = {
+  /* Settings for Themes and layout */
+  theme: 'blueCyanTheme',
+  direction: 'ltr',
+  type: 'light', // light or dark
+  layout: 'left-sidebar', // left-sidebar, top-navigation, mega-menu
+  /* End settings */
+  palette: [
+    { name: 'Mint', value: 'blueCyanTheme' },
+    { name: 'Monochrome', value: 'greyTheme' },
+  ],
   sidebarOpen: true,
-  theme: 'skyBlueTheme',
   pageLoaded: false,
-  palette: List([
-    { name: 'Purple Red', value: 'purpleRedTheme' },
-    { name: 'Natural Green Orange', value: 'greenTheme' },
-    { name: 'Blue Ocean', value: 'blueTheme' },
-    { name: 'Blue Sky', value: 'skyBlueTheme' },
-    { name: 'Sweet Magenta Cyan', value: 'magentaTheme' },
-    { name: 'Violet Green', value: 'purpleTheme' },
-    { name: 'Vintage Yellow', value: 'yellowCyanTheme' },
-    { name: 'Orange Violet', value: 'orangeTheme' },
-    { name: 'Cyan Green', value: 'cyanTheme' },
-    { name: 'Red Silver', value: 'redTheme' },
-    { name: 'Grey', value: 'greyTheme' },
-    { name: 'Green Nature', value: 'greenNatureTheme' },
-  ]),
   subMenuOpen: []
 };
 
@@ -47,49 +47,63 @@ const setNavCollapse = (arr, curRoute) => {
   return headMenu;
 };
 
-const initialImmutableState = fromJS(initialState);
-
-export default function reducer(state = initialImmutableState, action = {}) {
+/* eslint-disable default-case, no-param-reassign */
+const uiReducer = (state = initialState, action = {}) => produce(state, draft => {
   switch (action.type) {
     case TOGGLE_SIDEBAR:
-      return state.withMutations((mutableState) => {
-        mutableState.set('sidebarOpen', !state.get('sidebarOpen'));
-      });
-    case OPEN_SUBMENU:
-      return state.withMutations((mutableState) => {
-        // Set initial open parent menu
-        const activeParent = setNavCollapse(
-          getMenus(MenuContent),
-          action.initialLocation
-        );
+      draft.sidebarOpen = !state.sidebarOpen;
+      break;
+    case OPEN_MENU:
+      draft.sidebarOpen = true;
+      break;
+    case CLOSE_MENU:
+      draft.sidebarOpen = false;
+      draft.subMenuOpen = [];
+      break;
+    case OPEN_SUBMENU: {
+      // Set initial open parent menu
+      const activeParent = setNavCollapse(
+        getMenus(MenuContent),
+        action.initialLocation
+      );
 
-        // Once page loaded will expand the parent menu
-        if (action.initialLocation) {
-          mutableState.set('subMenuOpen', List([activeParent]));
-          return;
+      // Once page loaded will expand the parent menu
+      if (action.initialLocation) {
+        draft.subMenuOpen = [activeParent];
+        const path = action.initialLocation.split('/');
+        if (path.length <= 3 && action.initialLocation !== '/app') {
+          draft.sidebarOpen = false;
         }
+        return;
+      }
 
-        // Expand / Collapse parent menu
-        const menuList = state.get('subMenuOpen');
-        if (menuList.indexOf(action.key) > -1) {
-          if (action.keyParent) {
-            mutableState.set('subMenuOpen', List([action.keyParent]));
-          } else {
-            mutableState.set('subMenuOpen', List([]));
-          }
-        } else {
-          mutableState.set('subMenuOpen', List([action.key, action.keyParent]));
-        }
-      });
+      // Expand / Collapse parent menu
+      const menuList = state.subMenuOpen;
+      if (menuList.indexOf(action.key) > -1) {
+        draft.subMenuOpen = [];
+      } else {
+        draft.subMenuOpen = [action.key, action.keyParent];
+      }
+      break;
+    }
     case CHANGE_THEME:
-      return state.withMutations((mutableState) => {
-        mutableState.set('theme', action.theme);
-      });
+      draft.theme = action.theme;
+      break;
+    case CHANGE_MODE:
+      draft.type = action.mode;
+      break;
+    case CHANGE_LAYOUT:
+      draft.layout = action.layout;
+      break;
+    case CHANGE_DIRECTION:
+      draft.direction = action.direction;
+      break;
     case LOAD_PAGE:
-      return state.withMutations((mutableState) => {
-        mutableState.set('pageLoaded', action.isLoaded);
-      });
+      draft.pageLoaded = action.isLoaded;
+      break;
     default:
-      return state;
+      break;
   }
-}
+});
+
+export default uiReducer;

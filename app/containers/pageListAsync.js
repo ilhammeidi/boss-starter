@@ -1,64 +1,74 @@
-import Loadable from 'react-loadable';
-import Loading from 'ba-components/Loading';
+/* eslint-disable */
 
-// Dashboard
-export const DashboardV1 = Loadable({
-  loader: () => import('./Dashboard/Dashboard'),
-  loading: Loading,
-});
+import React from 'react';
+import Loading from 'boss-components/Loading';
+import loadable from '../utils/loadable';
 
-// Tables
-export const SimpleTable = Loadable({
-  loader: () => import('./Tables/BasicTable'),
-  loading: Loading,
-});
+export const BlankPage = loadable(() =>
+  import('./Pages/BlankPage'), {
+    fallback: <Loading />,
+  });
 
-// Forms
-export const ReduxForm = Loadable({
-  loader: () => import('./Forms/ReduxForm'),
-  loading: Loading,
-});
+export const DashboardPage = loadable(() =>
+  import('./Pages/Dashboard'), {
+    fallback: <Loading />,
+  });
 
-// Pages
-export const Login = Loadable({
-  loader: () => import('./Pages/Users/Login'),
-  loading: Loading,
-});
-export const Register = Loadable({
-  loader: () => import('./Pages/Users/Register'),
-  loading: Loading,
-});
-export const ResetPassword = Loadable({
-  loader: () => import('./Pages/Users/ResetPassword'),
-  loading: Loading,
-});
-export const BlankPage = Loadable({
-  loader: () => import('./Pages/BlankPage'),
-  loading: Loading,
-});
-export const LoginDedicated = Loadable({
-  loader: () => import('./Pages/Standalone/LoginDedicated'),
-  loading: Loading,
-});
+export const Form = loadable(() =>
+  import('./Pages/Forms/ReduxForm'), {
+    fallback: <Loading />,
+  });
 
-// Other
-export const NotFound = Loadable({
-  loader: () => import('./NotFound/NotFound'),
-  loading: Loading,
+export const Table = loadable(() =>
+  import('./Pages/Table/BasicTable'), {
+    fallback: <Loading />,
+  });
+
+export const Login = loadable(() =>
+  import('./Pages/Users/Login'), {
+    fallback: <Loading />,
+  });
+
+export const LoginDedicated = loadable(() =>
+  import('./Pages/Standalone/LoginDedicated'), {
+    fallback: <Loading />,
+  });
+
+export const Register = loadable(() =>
+  import('./Pages/Users/Register'), {
+    fallback: <Loading />,
+  });
+
+export const ResetPassword = loadable(() =>
+  import('./Pages/Users/ResetPassword'), {
+    fallback: <Loading />,
+  });
+
+export const NotFound = loadable(() =>
+  import('./NotFound/NotFound'), {
+  fallback: <Loading />,
 });
-export const NotFoundDedicated = Loadable({
-  loader: () => import('./Pages/Standalone/NotFoundDedicated'),
-  loading: Loading,
-});
-export const Error = Loadable({
-  loader: () => import('./Pages/Error'),
-  loading: Loading,
-});
-export const Maintenance = Loadable({
-  loader: () => import('./Pages/Maintenance'),
-  loading: Loading,
-});
-export const Parent = Loadable({
-  loader: () => import('./Parent'),
-  loading: Loading,
-});
+export const NotFoundDedicated = loadable(() =>
+  import('./Pages/Standalone/NotFoundDedicated'), {
+    fallback: <Loading />,
+  });
+
+export const Error = loadable(() =>
+  import('./Pages/Error'), {
+    fallback: <Loading />,
+  });
+
+export const Maintenance = loadable(() =>
+  import('./Pages/Maintenance'), {
+    fallback: <Loading />,
+  });
+
+export const ComingSoon = loadable(() =>
+  import('./Pages/ComingSoon'), {
+    fallback: <Loading />,
+  });
+
+export const Parent = loadable(() =>
+  import('./Parent'), {
+    fallback: <Loading />,
+  });

@@ -6,7 +6,7 @@
 
 -   Built with one of most popular javascript library React.JS and Redux
 -   Use Google Material Design and Icons
--   Easy to manage data collection with immutable.js
+-   Easy to manage data collection with immer.js
 -   Written in ES6 / ES 2015
 -   Responsive design
 -   JSS (CSS in JS)

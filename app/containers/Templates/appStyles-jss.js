@@ -1,5 +1,4 @@
-import bg from 'ba-images/material_bg.svg';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import bg from 'boss-images/material_bg.svg';
 
 const appFrame = {
   display: 'flex',
@@ -11,54 +10,117 @@ const appFrame = {
 const styles = theme => ({
   root: {
     width: '100%',
-    minHeight: '100%',
     marginTop: 0,
     zIndex: 1,
+    overflow: 'auto'
+  },
+  blogWrap: {
+    color: theme.palette.text.primary,
+    position: 'relative'
   },
   appFrameInner: {
+    color: theme.palette.text.primary,
     ...appFrame,
-    flexDirection: 'row'
   },
   appFrameOuter: {
+    color: theme.palette.text.primary,
     ...appFrame,
   },
-  content: {
+  appFrameLanding: {
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.default,
+    minHeight: 1000,
+  },
+  appFrameSlider: {
+    display: 'flex',
     width: '100%',
-    padding: theme.spacing(1.5),
+    height: '100%',
+    color: theme.palette.text.primary,
+    [theme.breakpoints.up('lg')]: {
+      position: 'absolute',
+      overflow: 'hidden',
+    },
+    backgroundColor: theme.palette.background.default
+  },
+  topNav: {
+    flexDirection: 'column',
+  },
+  sideNav: {
+    flexDirection: 'row',
+  },
+  content: {
+    width: '100%',
+    padding: theme.spacing(2),
     paddingLeft: 0,
     minHeight: '100%',
     overflow: 'hidden',
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+    },
   },
   outerContent: {
-    background: `url(${bg}) no-repeat ${theme.palette.primary.main} left bottom`,
+    background: `url(${bg}) no-repeat ${theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.main} left bottom`,
     width: '100%',
     backgroundSize: 'cover',
     flexDirection: 'column',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    [theme.breakpoints.down('md')]: {
-      padding: '20px 0'
+    overflowX: 'hidden'
+  },
+  bgWrap: {
+    position: 'fixed',
+    background: theme.palette.background.default,
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+  },
+  headerBg: {},
+  halfBg: {},
+  fullBg: {},
+  bgbar: {
+    backgroundAttachment: 'fixed',
+    width: '100%',
+    top: 0,
+    left: 0,
+    position: 'absolute',
+    '&$headerBg': {
+      height: 64
+    },
+    '&$halfBg': {
+      height: 400
+    },
+    '&$fullBg': {
+      height: '100%'
     },
   },
-  bgbar: {
-    backgroundColor: theme.palette.primary.main,
-    width: '100%',
-    position: 'fixed',
-    height: 184,
-    top: 0,
-    left: 0
+  solidBg: {
+    backgroundColor: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.main,
   },
+  medium: {
+    height: 180,
+  },
+  bigger: {
+    height: 360
+  },
+  sidebarLayout: {},
+  topbarLayout: {},
   mainWrap: {
-    position: 'relative',
-    marginTop: theme.spacing(6),
-    marginLeft: theme.spacing(1.5),
     height: '100%',
+    position: 'relative',
+    padding: theme.spacing(0, 1),
     '& > div': {
-      paddingBottom: theme.spacing(4),
-      willChange: 'inherit !important' // hack for floating form issue whne expaded
-    }
+      willChange: 'inherit !important' // hack for floating form issue when expaded
+    },
+    '&$sidebarLayout': {
+      paddingTop: theme.spacing(5),
+    },
+    '&$topbarLayout': {
+      width: '100%',
+      marginTop: theme.spacing(3),
+    },
   },
   preloader: {
     position: 'absolute',
@@ -76,16 +138,22 @@ const styles = theme => ({
     width: '100%',
     opacity: 0.5
   },
-  contentPadding: {
-    paddingLeft: 80
+  contentPaddingLeft: {
+    paddingLeft: theme.spacing(10)
+  },
+  contentPaddingLeftBig: {
+    paddingLeft: theme.spacing(2)
+  },
+  contentPaddingRight: {
+    paddingRight: theme.spacing(10)
   },
   hideApp: {
     display: 'none'
   },
   circularProgress: {
-    position: 'absolute',
-    top: 'calc(50% - 100px)',
-    left: 'calc(50% - 100px)',
+    position: 'fixed',
+    top: 'calc(50% - 45px)',
+    left: 'calc(50% - 45px)',
   },
   brand: {
     height: 54,
@@ -105,40 +173,26 @@ const styles = theme => ({
       color: theme.palette.common.white,
     }
   },
-  btn: {},
-  icon: {},
-  btnPicker: {
-    position: 'fixed',
-    zIndex: 2000,
-    right: 0,
-    top: 200,
-    background: fade(theme.palette.background.paper, 0.8),
-    borderRadius: '30px 0 0 30px',
-    padding: '4px 8px 4px 4px',
-    overflow: 'hidden',
-    border: `1px solid ${theme.palette.grey[300]}`,
-    '& $btn': {
-      background: theme.palette.secondary.main,
-      borderRadius: 30,
-      padding: 8,
-      boxShadow: theme.shadows[4],
+  light: {},
+  pageTitle: {
+    padding: theme.spacing(1),
+    paddingBottom: theme.spacing(3),
+    [theme.breakpoints.up('lg')]: {
       display: 'flex',
-      alignItems: 'center',
-      width: 40,
-      height: 40,
-      textCenter: 'cener',
-      overflow: 'hidden',
-      color: 'transparent',
-      transition: 'all 0.3s ease',
-      '& $icon': {
-        color: theme.palette.background.paper,
-      },
-      '&:hover': {
-        color: theme.palette.background.paper,
-        width: 90
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+    },
+    '& h4': {
+      fontWeight: 700,
+      textTransform: 'capitalize',
+      [theme.breakpoints.down('md')]: {
+        marginBottom: theme.spacing(3)
       }
-    }
-  }
+    },
+  },
+  darkTitle: {
+    color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
+  },
 });
 
 export default styles;

@@ -52,8 +52,9 @@ const styles = theme => ({
     extend: space,
     padding: 0,
     border: 'none',
-    borderTop: `1px solid ${theme.palette.grey[400]}`,
-    color: '#333',
+    borderTop: theme.palette.type === 'dark' ? `1px solid ${theme.palette.grey[700]}` : `1px solid ${theme.palette.grey[300]}`,
+    color: theme.palette.text.secondary,
+    margin: `${theme.spacing(4)}px ${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
     textAlign: 'center',
     '&:after': {
       content: 'attr(data-content)',
@@ -61,8 +62,8 @@ const styles = theme => ({
       position: 'relative',
       top: -15,
       fontSize: 14,
-      padding: '0 0.25em',
-      background: '#FFF'
+      padding: '0 1.25em',
+      background: theme.palette.background.paper
     }
   }
 });

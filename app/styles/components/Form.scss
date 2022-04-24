@@ -1,16 +1,17 @@
 @import "./../mixins";
 $sm: "(max-width: 600px)";
-.bodyForm{
+
+.bodyForm {
   position: relative;
   background: $white;
-  padding: 24px;
+  padding: 16px;
   @media #{$sm} {
     padding: 15px 10px;
   }
   max-height: 450px;
   overflow: auto;
 }
-.buttonArea{
+.buttonArea {
   background: material-color('grey', '100');
   position: relative;
   bottom: 0;

@@ -313,6 +313,7 @@
   border: solid 2px rgba(255, 255, 255, 0.5);
   border-radius: 100%;
   vertical-align: middle;
+  background: #FFF
 }
 
 .slider-content section span strong {
@@ -339,7 +340,7 @@
 
 .slider-wrapper.short,
 .slider-wrapper.short .slide {
-  height: 261px;
+  height: 268px;
 }
 
 .slider-content .inner h1 {

@@ -7,6 +7,7 @@ const styles = theme => ({
     color: 'rgba(255, 255, 255, 0.5)',
     '& p': {
       display: 'block',
+      margin: 0,
       '& span': {
         textTransform: 'capitalize',
         marginLeft: 5,
@@ -18,9 +19,9 @@ const styles = theme => ({
       }
     },
     '&$dark': {
-      color: theme.palette.grey[900],
+      color: theme.palette.text.secondary,
       '& a': {
-        color: theme.palette.grey[900]
+        color: theme.palette.text.primary
       }
     }
   }

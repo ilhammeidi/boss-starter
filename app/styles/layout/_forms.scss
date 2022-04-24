@@ -11,19 +11,18 @@ fieldset {
 
 legend {
   font-weight: 600;
-  margin-bottom: $small-spacing / 2;
+  margin-bottom: $small-spacing * 0.5;
   padding: 0;
 }
 
 textarea {
   resize: vertical;
-  font-family: $base-font-family;
 }
 
 [type="checkbox"],
 [type="radio"] {
   display: inline;
-  margin-right: $small-spacing / 2;
+  margin-right: $small-spacing * 0.5;
 }
 
 [type="file"] {
@@ -44,4 +43,12 @@ select {
     outline: $focus-outline;
     outline-offset: $focus-outline-offset;
   }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="search"],
+input[type="url"],
+input[type="number"] {
+  word-break: normal;
 }

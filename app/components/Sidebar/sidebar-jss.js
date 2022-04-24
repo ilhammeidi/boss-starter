@@ -1,38 +1,42 @@
+import { alpha } from '@material-ui/core/styles';
+import lightGreen from '@material-ui/core/colors/lightGreen';
+import red from '@material-ui/core/colors/red';
+import amber from '@material-ui/core/colors/amber';
+import grey from '@material-ui/core/colors/grey';
+
 const drawerWidth = 240;
 const styles = theme => ({
   user: {
     justifyContent: 'center'
   },
+  drawer: {
+    width: drawerWidth
+  },
   drawerPaper: {
     position: 'relative',
     height: '100%',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.default,
     border: 'none',
-    width: drawerWidth,
+    background: 'none',
+    color: theme.palette.text.primary,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+
   },
   swipeDrawerPaper: {
     width: drawerWidth,
   },
   opened: {
-    background: theme.palette.grey[200],
     '& $primary, & $icon': {
-      color: theme.palette.secondary.dark,
+      color: theme.palette.primary.main,
     },
   },
-  drawerInner: {
-    height: '100%',
-    position: 'fixed',
-    width: drawerWidth,
-  },
   drawerPaperClose: {
-    width: 66,
-    position: 'fixed',
-    overflowX: 'hidden',
+    width: theme.spacing(8),
+    position: 'absolute',
+    overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -41,33 +45,54 @@ const styles = theme => ({
       justifyContent: 'flex-start'
     },
     '& $bigAvatar': {
-      width: 40,
-      height: 40,
+      width: 50,
+      height: 50,
     },
-    '& li ul': {
+    '& nav': {
       display: 'none'
     },
     '&:hover': {
       width: drawerWidth,
+      background: theme.palette.background.default,
       boxShadow: theme.shadows[6],
-      '& li ul': {
+      '& nav': {
         display: 'block'
       }
     },
+    '& $brand': {
+      opacity: 0,
+      zIndex: -1
+    },
+    '& $profile': {
+      flexDirection: 'row',
+      top: theme.spacing(6),
+      padding: theme.spacing(0.5),
+      textAlign: 'left',
+      '& button': {
+        width: 'auto'
+      }
+    },
+    '& $avatar': {
+      marginRight: theme.spacing(3)
+    },
     '& $menuContainer': {
-      paddingLeft: theme.spacing(1.5),
-      paddingRight: theme.spacing(1.5),
-      width: drawerWidth,
+      '&$menuContainer': {
+        paddingBottom: 0,
+      }
     },
-    '& $drawerInner': {
-      width: 'auto'
-    },
-    '& $brandBar': {
-      opacity: 0
-    }
+  },
+  drawerInner: {
+    // Make the items inside not wrap when transitioning:
+    height: '100%',
+    position: 'fixed',
+  },
+  drawerInnerMobile: {
+    // Make the items inside not wrap when transitioning:
+    height: '100%',
+    background: theme.palette.background.paper
   },
   drawerHeader: {
-    background: theme.palette.primary.main,
+    background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     padding: '0',
     ...theme.mixins.toolbar,
@@ -98,52 +123,88 @@ const styles = theme => ({
     background: theme.palette.primary.dark,
   },
   nested: {
-    paddingLeft: 0,
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
+    paddingLeft: theme.spacing(4),
     '& > div > span': {
-      fontSize: '0.8125rem'
+      fontSize: 14
     }
   },
   child: {
     '& a': {
-      paddingLeft: theme.spacing(3),
+      paddingLeft: theme.spacing(6),
     }
   },
-  title: {},
+  title: {
+    fontSize: 10,
+    textTransform: 'uppercase',
+    paddingLeft: theme.spacing(4),
+    marginTop: theme.spacing(2),
+    display: 'block',
+    color: theme.palette.secondary.main,
+    lineHeight: '28px',
+    fontWeight: 'bold'
+  },
   dense: {
+    paddingLeft: theme.spacing(1.5),
     '& > $title:first-child': {
       margin: '0'
     },
     '& $head': {
-      paddingLeft: theme.spacing(7)
+      paddingLeft: theme.spacing(4),
+      '& > div > span': {
+        fontSize: 14
+      }
     }
   },
   active: {
-    backgroundColor: theme.palette.primary.light,
-    '& $primary, & $icon': {
-      color: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.primary.main, 0.24) : theme.palette.primary.light,
+    '& $primary': {
+      color: theme.palette.type === 'dark' ? theme.palette.common.white : theme.palette.primary.dark,
     },
-    '&:hover': {
-      backgroundColor: theme.palette.primary.light,
+    '& $icon': {
+      color: theme.palette.primary.dark,
+    },
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.primary.main, 0.24) : theme.palette.primary.light,
     }
   },
   nolist: {
     listStyle: 'none',
   },
-  primary: {},
-  iconWrapper: {
-    width: theme.spacing(5),
-    minWidth: 0,
-    marginRight: 0,
-    marginLeft: theme.spacing(2)
+  primary: {
+    whiteSpace: 'nowrap'
   },
   icon: {
-    marginRight: 0,
-    color: theme.palette.secondary.dark,
+    minWidth: 36,
+    fontSize: 24
   },
+  iconed: {},
   head: {
-    paddingLeft: 0
+    margin: `${theme.spacing(1)}px 0`,
+    borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
+    padding: theme.spacing(1),
+  },
+  headCapital: {
+    position: 'relative',
+    textTransform: 'uppercase',
+    borderRadius: theme.spacing(1),
+    '& span': {
+      fontSize: 14
+    }
+  },
+  copyright: {
+    color: theme.palette.text.secondary,
+    background: theme.palette.background.paper,
+    padding: theme.spacing(2),
+    position: 'fixed',
+    bottom: 0,
+    [theme.breakpoints.up('lg')]: {
+      background: 'none',
+      position: 'absolute',
+    },
+    left: theme.spacing(3),
+    lineHeight: '24px',
   },
   brand: {
     display: 'flex',
@@ -152,22 +213,43 @@ const styles = theme => ({
     padding: '10px 10px 5px',
     height: 64,
     position: 'relative',
+    textDecoration: 'none',
+    fontSize: 16,
+    margin: 0,
+    fontWeight: 500,
+    color: theme.palette.common.white,
     '& img': {
-      width: 20
+      width: 20,
+      marginRight: 10,
+    },
+  },
+  brandBig: {
+    position: 'relative',
+    textAlign: 'center',
+    '& > div': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    '& img': {
+      width: 24,
+      marginRight: theme.spacing(1),
     },
     '& h3': {
-      fontSize: 16,
-      margin: 0,
-      paddingLeft: 10,
-      fontWeight: 500
+      fontSize: 18,
+      margin: theme.spacing(2, 0),
+      fontWeight: 500,
+      color: theme.palette.common.white,
     }
   },
   profile: {
-    height: 120,
+    height: 115,
+    width: '100%',
     display: 'flex',
     fontSize: 14,
     padding: 10,
     alignItems: 'center',
+    zIndex: 0,
     '& h4': {
       fontSize: 18,
       marginBottom: 0,
@@ -176,29 +258,110 @@ const styles = theme => ({
       whiteSpace: 'nowrap',
       width: 110
     },
-    '& span': {
+    '& p': {
       fontSize: 12,
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       width: 110,
       display: 'block',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      marginBottom: 0
+    },
+    '& button': {
+      fontSize: 12,
+      color: theme.palette.common.white,
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      width: 'auto',
+      display: 'block',
+      overflow: 'hidden',
+      textTransform: 'capitalize',
+      padding: theme.spacing(0, 0.5),
+      minHeight: 20,
+      marginTop: 4,
+      '& span': {
+        display: 'flex',
+        justifyContent: 'flex-start'
+      }
     }
   },
+  statusMenu: {
+    '& li': {
+      width: 100
+    }
+  },
+  dotStatus: {
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    display: 'inline-block',
+    borderRadius: '50%',
+    marginRight: theme.spacing(0.5)
+  },
+  online: {
+    backgroundColor: lightGreen[500]
+  },
+  bussy: {
+    backgroundColor: red[500]
+  },
+  idle: {
+    backgroundColor: amber[500]
+  },
+  offline: {
+    backgroundColor: grey[500]
+  },
+  rounded: {},
+  landingNav: {},
   menuContainer: {
-    padding: theme.spacing(1),
-    background: theme.palette.background.default,
-    [theme.breakpoints.up('lg')]: {
-      padding: theme.spacing(1.5),
-    },
-    paddingRight: theme.spacing(1),
     overflow: 'auto',
-    height: 'calc(100% - 185px)',
+    height: 'calc(100% - 192px)',
+    width: drawerWidth,
     position: 'relative',
-    display: 'block'
+    display: 'block',
+    padding: `${theme.spacing(1)}px 0`,
+    '&$landingNav': {
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      paddingTop: theme.spacing(1),
+      [theme.breakpoints.down('lg')]: {
+        height: 'calc(100% - 164px)',
+      }
+    },
+    '&$rounded': {
+      paddingLeft: theme.spacing(2.5),
+      '& > div': {
+        paddingRight: theme.spacing(1)
+      },
+      '& a': {
+        borderRadius: theme.rounded.small
+      },
+      '& $opened': {
+        '&:before': {
+          background: theme.palette.primary.main
+        }
+      }
+    },
+    '&::-webkit-scrollbar': {
+      width: 8,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: 12,
+      backgroundColor: 'rgba(0,0,0,0)',
+    },
+    '&:hover': {
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        border: '1px solid rgba(255,255,255,0.4)',
+      }
+    },
+    '& a:hover': {
+      background: theme.palette.type === 'dark' ? 'rgba(80,80,80, 0.9)' : 'rgba(80,80,80, 0.1)'
+    }
   },
   divider: {
     marginTop: theme.spacing(1)
+  },
+  badge: {
+    height: 'auto'
   }
 });
 

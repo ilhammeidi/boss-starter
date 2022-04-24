@@ -1,67 +1,75 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Helmet } from 'react-helmet';
-import brand from 'ba-api/brand';
+import brand from 'boss-api/dummy/brand';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import MenuContent from 'ba-api/menu';
-import { PapperBlock } from 'ba-components';
-import { Button } from '@material-ui/core';
+import MenuContent from 'boss-api/ui/menu';
+import { PapperBlock } from 'boss-components';
 
 const styles = {
   link: {
     display: 'block',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    marginLeft: 20
+  },
+  title: {
+    margin: '20px 16px 5px',
+    textTransform: 'uppercase',
+    fontSize: 12,
   }
 };
 
-function sortByKey(array, key) {
-  return array.sort((a, b) => {
-    const x = a[key]; const y = b[key];
-    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-  });
-}
-
-class Parent extends React.Component {
-  render() {
-    const title = brand.name;
-    const description = brand.desc;
-    const { classes } = this.props;
-    // Get Path Location
-    let parts = this.props.history.location.pathname.split('/');
-    const place = parts[parts.length - 1];
-    parts = parts.slice(1, parts.length - 1);
-    const menuItems = MenuContent
-      .find(obj => (
-        obj.key === place
-      ));
-    const getMenus = menuArray => menuArray.map((item, index) => (
-      <Button
-        key={index.toString()}
-        color="primary"
-        component={Link}
-        className={classes.link}
-        to={item.link}
-      >
-        {item.name}
-      </Button>
+function Parent(props) {
+  const title = brand.name;
+  const description = brand.desc;
+  const { classes, history } = props;
+  // Get Path Location
+  let parts = history.location.pathname.split('/');
+  const place = parts[parts.length - 1];
+  parts = parts.slice(1, parts.length - 1);
+  const menuItems = MenuContent
+    .find(obj => (
+      obj.key === place
     ));
+  const getMenus = menuArray => menuArray.map((item, index) => {
+    if (item.link) {
+      return (
+        <Button
+          key={index.toString()}
+          color="primary"
+          component={Link}
+          className={classes.link}
+          to={item.link}
+        >
+          {item.name}
+        </Button>
+      );
+    }
     return (
-      <div>
-        <Helmet>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          <meta property="twitter:title" content={title} />
-          <meta property="twitter:description" content={description} />
-        </Helmet>
-        <PapperBlock title={place} desc="">
-          {menuItems !== undefined && getMenus(sortByKey(menuItems.child, 'key'))}
-        </PapperBlock>
-      </div>
+      <Typography key={index.toString()} className={classes.title} variant="h6">
+        { item.name }
+      </Typography>
     );
-  }
+  });
+
+  return (
+    <div>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+      </Helmet>
+      <PapperBlock title={place} desc="">
+        {menuItems !== undefined && getMenus(menuItems.child, 'key')}
+      </PapperBlock>
+    </div>
+  );
 }
 
 Parent.propTypes = {

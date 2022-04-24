@@ -86,7 +86,7 @@ button.slick-arrow:before{
   font-size: 36px;
 }
 button.slick-arrow:hover,
-button.slick-arrow:focus: {
+button.slick-arrow:hover {
   background-color: grey;
 }
 .slick-center{
@@ -99,6 +99,7 @@ button.slick-arrow:focus: {
 .thumb-nav .slick-dots li{
   width: 60px;
   height: auto;
+  min-height: 52px;
   max-width: none;
 }
 .thumb-nav .slick-dots li.slick-active{

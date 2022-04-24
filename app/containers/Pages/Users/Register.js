@@ -1,78 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import brand from 'boss-api/dummy/brand';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Type from 'ba-styles/Typography.scss';
+import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
+import Typography from '@material-ui/core/Typography';
+import Type from 'boss-styles/Typography.scss';
 import ArrowForward from '@material-ui/icons/ArrowForward';
-import brand from 'ba-api/brand';
-import logo from 'ba-images/logo.svg';
-import { RegisterForm } from 'ba-components';
-import styles from 'ba-components/Forms/user-jss';
+import logo from 'boss-images/logo.svg';
+import { RegisterForm } from 'boss-components';
+import styles from 'boss-components/Forms/user-jss';
 
-import { Grid, Hidden, Typography } from '@material-ui/core';
+function RegisterV3(props) {
+  const [valueForm, setValueForm] = useState(null);
 
-class Login extends React.Component {
-  state = {
-    valueForm: []
-  }
-
-  submitForm(values) {
+  const submitForm = values => {
     setTimeout(() => {
-      this.setState({ valueForm: values });
-      console.log(`You submitted:\n\n${this.state.valueForm}`);
+      setValueForm(values);
+      console.log(`You submitted:\n\n${valueForm}`);
       window.location.href = '/app';
     }, 500); // simulate server latency
-  }
+  };
 
-  render() {
-    const title = brand.name + ' - Register';
-    const description = brand.desc;
-    const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <Helmet>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <meta property="og:title" content={title} />
-          <meta property="og:description" content={description} />
-          <meta property="twitter:title" content={title} />
-          <meta property="twitter:description" content={description} />
-        </Helmet>
-        <div className={classes.container}>
-          <Grid container spacing={3} alignItems="center" direction="row" justify="center">
-            <Grid item container justify="center" spacing={0} className={classes.loginWrap}>
-              <Hidden smDown>
-                <Grid item md={6} className={classes.welcomeWrap}>
-                  {/* Welcome Login */}
-                  <div className={classes.welcome}>
-                    <div className={classes.welcomeContent}>
-                      <div className={classes.brand}>
-                        <img src={logo} alt={brand.name} />
-                        <h3>{brand.name}</h3>
-                      </div>
-                      <Typography variant="h4">
-                        <span className={Type.light}>Nice to meet You :)</span>
-                      </Typography>
+  const title = brand.name + ' - Login Version';
+  const description = brand.desc;
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+      </Helmet>
+      <div className={classes.container}>
+        <Grid container spacing={3} align="center" direction="row" justifyContent="center">
+          <Grid item container justifyContent="center" align="center" spacing={0} className={classes.loginWrap}>
+            <Hidden smDown>
+              <Grid item md={6} className={classes.welcomeWrap}>
+                {/* Welcome Login */}
+                <div className={classes.welcome}>
+                  <div className={classes.welcomeContent}>
+                    <div className={classes.brand}>
+                      <img src={logo} alt={brand.name} />
+                      <h3>{brand.name}</h3>
                     </div>
-                    <ArrowForward className={classes.decoBottom} />
+                    <Typography variant="h4">
+                      <span className={Type.light}>Nice to meet You :)</span>
+                    </Typography>
                   </div>
-                </Grid>
-              </Hidden>
-              <Grid item md={6} sm={8} xs={11}>
-                {/* ----------------------------------------------------------------------*/}
-                {/* Load Register Form */}
-                <RegisterForm onSubmit={(values) => this.submitForm(values)} />
+                  <ArrowForward className={classes.decoBottom} />
+                </div>
               </Grid>
+            </Hidden>
+            <Grid item md={6} sm={8} xs={11}>
+              {/* ----------------------------------------------------------------------*/}
+              {/* Load Register Form */}
+              <RegisterForm onSubmit={(values) => submitForm(values)} />
             </Grid>
           </Grid>
-        </div>
+        </Grid>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-Login.propTypes = {
+RegisterV3.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(RegisterV3);

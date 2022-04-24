@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Info from '@material-ui/icons/Info';
+import Notification from '@material-ui/icons/Notifications';
 import Warning from '@material-ui/icons/Warning';
 import Check from '@material-ui/icons/CheckCircle';
 import Error from '@material-ui/icons/RemoveCircle';
@@ -18,28 +19,32 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Notification from '@material-ui/icons/Notifications';
-import dummy from 'ba-api/dummyContents';
-import messageStyles from 'ba-styles/Messages.scss';
-import avatarApi from 'ba-api/avatars';
-import link from 'ba-api/link';
+import dummy from 'boss-api/dummy/dummyContents';
+import messageStyles from 'boss-styles/Messages.scss';
+import avatarApi from 'boss-api/images/avatars';
+import link from 'boss-api/ui/link';
 import styles from './header-jss';
 
 function UserMenu(props) {
-  const { classes, dark } = props;
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [openMenu, setOpenMenu] = useState(null);
+  const [menuState, setMenuState] = useState({
+    anchorEl: null,
+    openMenu: null
+  });
 
   const handleMenu = menu => (event) => {
-    setOpenMenu(openMenu === menu ? null : menu);
-    setAnchorEl(event.currentTarget);
+    const { openMenu } = menuState;
+    setMenuState({
+      openMenu: openMenu === menu ? null : menu,
+      anchorEl: event.currentTarget
+    });
   };
 
   const handleClose = () => {
-    setOpenMenu(null);
-    setAnchorEl(null);
+    setMenuState({ anchorEl: null, openMenu: null });
   };
 
+  const { classes, dark } = props;
+  const { anchorEl, openMenu } = menuState;
   return (
     <div>
       <IconButton
@@ -77,7 +82,7 @@ function UserMenu(props) {
             <ListItemAvatar>
               <Avatar alt="User Name" src={avatarApi[0]} />
             </ListItemAvatar>
-            <ListItemText primary={dummy.text.subtitle} className={classes.textNotif} secondary={dummy.text.date} />
+            <ListItemText primary={dummy.text.subtitle} secondary={dummy.text.date} />
           </div>
         </MenuItem>
         <Divider variant="inset" />
